@@ -1,0 +1,231 @@
+{
+  "info": {
+    "name": "HostelMeal Connect API",
+    "description": "Complete API collection for HostelMeal Connect MERN stack application",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000/api" },
+    { "key": "token", "value": "" },
+    { "key": "orderId", "value": "" },
+    { "key": "menuId", "value": "" },
+    { "key": "providerId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register Student",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/auth/register",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"name\":\"Test Student\",\"email\":\"test@example.com\",\"password\":\"Test@1234\",\"role\":\"student\",\"phone\":\"9876543210\"}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [{"listen": "test", "script": {"exec": ["const res = pm.response.json(); if(res.data?.token) pm.collectionVariables.set('token', res.data.token);"]}}],
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/auth/login",
+            "body": {"mode": "raw", "raw": "{\"email\":\"rahul@example.com\",\"password\":\"Student@123\"}"}
+          }
+        },
+        {
+          "name": "Get Me",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{baseUrl}}/auth/me"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Content-Type", "value": "application/json"}],
+            "url": "{{baseUrl}}/auth/forgot-password",
+            "body": {"mode": "raw", "raw": "{\"email\":\"rahul@example.com\"}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Menu",
+      "item": [
+        {
+          "name": "Get Today's Menus",
+          "request": {"method": "GET", "url": "{{baseUrl}}/menu/today"}
+        },
+        {
+          "name": "Create Menu (Provider)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{baseUrl}}/menu/create",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"date\":\"2024-12-25\",\"sabjiOptions\":[{\"name\":\"Palak Paneer\",\"calories\":250},{\"name\":\"Aloo Gobi\",\"calories\":180},{\"name\":\"Rajma\",\"calories\":280}],\"sweetDishOptions\":[{\"name\":\"Gulab Jamun\"},{\"name\":\"Kheer\"}],\"dalOptions\":[{\"name\":\"Dal Tadka\"}],\"rotiRiceOptions\":[{\"name\":\"Roti 4 pcs\"}],\"basePrice\":80}"
+            }
+          }
+        },
+        {
+          "name": "Publish Menu",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{baseUrl}}/menu/{{menuId}}/publish"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Votes",
+      "item": [
+        {
+          "name": "Get Voting Menus",
+          "request": {"method": "GET", "url": "{{baseUrl}}/votes/today"}
+        },
+        {
+          "name": "Cast Vote",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{baseUrl}}/votes/cast",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"menuId\":\"{{menuId}}\",\"selectedSabji\":[\"SABJI_ID_1\",\"SABJI_ID_2\"],\"selectedSweetDish\":\"SWEET_ID\"}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Orders",
+      "item": [
+        {
+          "name": "Create Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{baseUrl}}/orders/create",
+            "body": {
+              "mode": "raw",
+              "raw": "{\"providerId\":\"{{providerId}}\",\"items\":[{\"name\":\"Palak Paneer\",\"type\":\"sabji\",\"price\":80,\"quantity\":1}],\"paymentMethod\":\"wallet\",\"deliveryAddress\":{\"hostelName\":\"Shiv Nagar Hostel\",\"roomNumber\":\"204\"},\"subtotal\":80,\"totalAmount\":105}"
+            }
+          }
+        },
+        {
+          "name": "Get My Orders",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{baseUrl}}/orders/my"
+          }
+        },
+        {
+          "name": "Cancel Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{baseUrl}}/orders/{{orderId}}/cancel",
+            "body": {"mode": "raw", "raw": "{\"reason\":\"Changed my mind\"}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Wallet",
+      "item": [
+        {
+          "name": "Get Wallet",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{baseUrl}}/wallet"
+          }
+        },
+        {
+          "name": "Top Up Wallet",
+          "request": {
+            "method": "POST",
+            "header": [
+              {"key": "Content-Type", "value": "application/json"},
+              {"key": "Authorization", "value": "Bearer {{token}}"}
+            ],
+            "url": "{{baseUrl}}/wallet/topup",
+            "body": {"mode": "raw", "raw": "{\"amount\":500}"}
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Get All Users",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{baseUrl}}/admin/users"
+          }
+        },
+        {
+          "name": "Get Pending Providers",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{baseUrl}}/admin/providers/pending"
+          }
+        },
+        {
+          "name": "Approve Provider",
+          "request": {
+            "method": "PUT",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": "{{baseUrl}}/admin/providers/{{providerId}}/approve"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Analytics",
+      "item": [
+        {
+          "name": "Admin Analytics",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{baseUrl}}/analytics/admin?range=30", "query": [{"key": "range", "value": "30"}]}
+          }
+        },
+        {
+          "name": "Provider Analytics",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{token}}"}],
+            "url": {"raw": "{{baseUrl}}/analytics/provider?range=30", "query": [{"key": "range", "value": "30"}]}
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "name": "hostelmeal-connect",
+  "version": "1.0.0",
+  "description": "HostelMeal Connect - MERN Stack Platform",
+  "private": true,
+  "scripts": {
+    "install:all": "cd backend && npm install && cd ../frontend && npm install",
+    "dev": "concurrently \"cd backend && npm run dev\" \"cd frontend && npm run dev\"",
+    "seed": "cd backend && npm run seed",
+    "build": "cd frontend && npm run build",
+    "start": "cd backend && npm start",
+    "docker:up": "docker-compose up -d --build",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f backend"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
