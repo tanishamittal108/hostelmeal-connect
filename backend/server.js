@@ -40,6 +40,7 @@ const couponRoutes = require('./routes/coupons');
 const { finalizeVoting, sendSubscriptionReminders, generateDailyReport } = require('./utils/cronJobs');
 
 const app = express();
+app.set('trust proxy', 1);
 const server = http.createServer(app);
 
 // Connect Database
