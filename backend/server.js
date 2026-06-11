@@ -176,9 +176,14 @@ const authLimiter = rateLimit({
 
 // CORS
 app.use(cors({
-  origin: [process.env.CLIENT_URL, 'http://localhost:5173', 'http://localhost:3000'],
+  origin: [
+    process.env.CLIENT_URL,
+    'https://hostelmeal-connect.vercel.app',  // ← Yeh add karo
+    'http://localhost:5173',
+    'http://localhost:3000'
+  ],
   credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  methods: ['GET', 'POST', 'PUT','DELETE', 'PATCH'],
   allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
